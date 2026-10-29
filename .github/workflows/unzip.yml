@@ -1,0 +1,26 @@
+name: Extract ZIP
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract ZIP files
+        run: |
+          # Cari dan ekstrak semua file .zip di dalam repo
+          for f in *.zip; do
+            if [ -f "$f" ]; then
+              unzip -o "$f" -d extracted_folder/
+            fi
+          done
+          
+      - name: Commit extracted files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-extract ZIP files"
